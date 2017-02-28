@@ -16,15 +16,11 @@ export default class billfold extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
+        <Text style={styles.heading}>
+          BillFold
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
+        <Text style={styles.tagline}>
+          Expense Manager
         </Text>
       </View>
     );
@@ -36,18 +32,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'powderblue',
   },
-  welcome: {
+  heading: {
+    fontSize: 40,
+    textAlign: 'center',
+    margin: 10,
+    backgroundColor: '#FF6600',
+    color: 'powderblue',
+    paddingLeft: 10,
+    paddingRight: 10,
+    lineHeight: 50
+  },
+  tagline: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });
 
 AppRegistry.registerComponent('billfold', () => billfold);
