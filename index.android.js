@@ -7,48 +7,26 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View
+  Navigator
 } from 'react-native';
 
-export default class billfold extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.heading}>
-          BillFold
-        </Text>
-        <Text style={styles.tagline}>
-          Expense Manager
-        </Text>
-      </View>
-    );
-  }
-}
+var First = require('./app/first').default;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'powderblue',
-  },
-  heading: {
-    fontSize: 40,
-    textAlign: 'center',
-    margin: 10,
-    backgroundColor: '#FF6600',
-    color: 'powderblue',
-    paddingLeft: 10,
-    paddingRight: 10,
-    lineHeight: 50
-  },
-  tagline: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  }
-});
+export default class billfold extends Component {
+    render() {
+        return (
+            <Navigator
+                initialRoute={{id: 'First'}}
+                renderScene={this.navigatorRenderScene}
+            />
+        );
+    }
+    navigatorRenderScene(route, navigator) {
+        switch(route.id) {
+            case 'First':
+                return (<First navigator={navigator} title="first" />);
+        }
+    }
+}
 
 AppRegistry.registerComponent('billfold', () => billfold);
