@@ -11,12 +11,13 @@ import {
 } from 'react-native';
 
 var First = require('./app/first').default;
+const ExpenseList = require('./app/expense-list/expense-list').default;
 
 export default class billfold extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{id: 'First'}}
+                initialRoute={{id: 'ExpenseList'}}
                 renderScene={this.navigatorRenderScene}
             />
         );
@@ -25,6 +26,8 @@ export default class billfold extends Component {
         switch(route.id) {
             case 'First':
                 return (<First navigator={navigator} title="first" />);
+            case 'ExpenseList':
+                return (<ExpenseList navigator={navigator} title="Expense List" />);
         }
     }
 }
