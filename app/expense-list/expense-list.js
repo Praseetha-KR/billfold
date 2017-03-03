@@ -6,6 +6,7 @@ import {
     ScrollView,
     ListView,
     Image,
+    TouchableHighlight,
     ToolbarAndroid,
     Animated,
     Easing,
@@ -21,16 +22,7 @@ export default class ExpenseList extends Component {
             spinLoader: new Animated.Value(0),
         }
 
-        this.categoryIconList = {
-            'food': require('../img/food.png'),
-            'travel': require('../img/travel.png'),
-            'supermarket': require('../img/supermarket.png'),
-            'recharge': require('../img/recharge.png'),
-            'e-shopping': require('../img/e_shopping.png'),
-            'rent/wifi/hosting': require('../img/rent_wifi_hosting.png'),
-            'transfers': require('../img/transfers.png'),
-            'others': require('../img/others.png'),
-        };
+        this.categoryIconList = config.CATEGORY_ICONS;
     }
     componentWillMount() {
         this._initLoader();
@@ -92,13 +84,6 @@ export default class ExpenseList extends Component {
         });
     }
 
-    _selectLink(nav) {
-        this.props.navigator.push({
-            id: nav,
-            title: nav
-        });
-    }
-
     _renderExpenseListCard(rowData) {
         if (!rowData) {
             const spin = this.state.spinLoader.interpolate({
@@ -119,19 +104,27 @@ export default class ExpenseList extends Component {
         const row = JSON.parse(JSON.stringify(rowData));
         const d = new Date(row.date);
         const date = `${d.toDateString().slice(0, 10).toUpperCase()}`;
-
-
+        const dateStr = `${('0' + d.getDate()).slice(-2)}${('0' + (d.getMonth() + 1)).slice(-2)}${d.getFullYear()}`;
 
         return(
-            <View style={styles.card}>
-                <View style={styles.card__header}>
-                    <Text style={styles.card__date}>{date}</Text>
-                    <Text style={this._getExpenseSlabColors(row.total)}>&#8377;&nbsp;{row.total}</Text>
+            <TouchableHighlight onPress={() => this._onCardClick(dateStr)}>
+                <View style={styles.card}>
+                    <View style={styles.card__header}>
+                        <Text style={styles.card__date}>{dateStr}</Text>
+                        <Text style={this._getExpenseSlabColors(row.total)}>&#8377;&nbsp;{row.total}</Text>
+                    </View>
+                    {this._renderCategoryRow(row, Object.keys(this.categoryIconList).slice(0,4), this.categoryIconList)}
+                    {this._renderCategoryRow(row, Object.keys(this.categoryIconList).slice(4,8), this.categoryIconList)}
                 </View>
-                {this._renderCategoryRow(row, Object.keys(this.categoryIconList).slice(0,4), this.categoryIconList)}
-                {this._renderCategoryRow(row, Object.keys(this.categoryIconList).slice(4,8), this.categoryIconList)}
-            </View>
+            </TouchableHighlight>
         );
+    }
+    _onCardClick(dateStr) {
+        this.props.navigator.push({
+            id: 'ExpenseView',
+            title: 'Daily Expense',
+            date: dateStr
+        });
     }
     _renderCategoryRow(expenseObj, categoryArr, iconList) {
         return (
