@@ -17,16 +17,7 @@ export default class ExpenseView extends Component {
             expense: { date: '' },
         }
 
-        this.categoryIconList = {
-            'food': require('../img/food.png'),
-            'travel': require('../img/travel.png'),
-            'supermarket': require('../img/supermarket.png'),
-            'recharge': require('../img/recharge.png'),
-            'e-shopping': require('../img/e_shopping.png'),
-            'rent/wifi/hosting': require('../img/rent_wifi_hosting.png'),
-            'transfers': require('../img/transfers.png'),
-            'others': require('../img/others.png'),
-        };
+        this.categoryIconList = config.CATEGORY_ICONS;
     }
     componentWillMount() {
         this._getExpense()
@@ -61,10 +52,9 @@ export default class ExpenseView extends Component {
     }
 
     _renderCategories(expense) {
-        const categoryIconList = config.CATEGORY_ICONS;
         return (
             <View style={styles.categories}>
-                {Object.keys(categoryIconList).map((key) => {
+                {Object.keys(this.categoryIconList).map((key) => {
                     return (
                         <View key={key} style={styles.category}>
                             <View style={styles.category__name}>
