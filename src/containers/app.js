@@ -5,7 +5,10 @@ import * as ExpensesActions from '../actions/expenses';
 
 function mapStateToProps(state) {
     return {
-        onlineExpenses: state.expenses.onlineList
+        onlineExpenses: state.expenses.onlineList,
+        offlineExpenses: state.expenses.offlineList,
+        connectionChecked: state.expenses.connectionChecked,
+        connected: state.expenses.connected
     };
 }
 

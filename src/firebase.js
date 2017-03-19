@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase';
-import { addExpenseSuccess, removeExpenseSuccess } from './actions/expenses';
+import { addExpenseSuccess, removeExpenseSuccess, goOnline, goOffline } from './actions/expenses';
 
 import config from '../config';
 
@@ -12,6 +12,7 @@ const firebaseApp = initializeApp({
 });
 
 export const expensesRef = firebaseApp.database().ref('expenses');
+const connectedRef = firebaseApp.database().ref('.info/connected');
 
 export function syncFirebase(store) {
     expensesRef.on('child_added', (snapshot) => {
@@ -20,5 +21,13 @@ export function syncFirebase(store) {
 
     expensesRef.on('child_removed', (snapshot) => {
         store.dispatch(removeExpenseSuccess(snapshot.val().id));
+    });
+
+    connectedRef.on('value', snap => {
+        if (snap.val() === true) {
+            store.dispatch(goOnline());
+        } else {
+            store.dispatch(goOffline());
+        }
     });
 }

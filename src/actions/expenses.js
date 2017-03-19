@@ -1,3 +1,4 @@
+import offline from 'react-native-simple-store';
 import { expensesRef } from '../firebase';
 
 export const ADD_EXPENSE = 'ADD_EXPENSE';
@@ -41,5 +42,46 @@ export function removeExpenseSuccess(id) {
     return {
         type: REMOVE_EXPENSE_SUCCESS,
         id
+    }
+}
+
+
+export const OFFLINE_EXPENSES_LOADED = 'OFFLINE_EXPENSES_LOADED';
+export const CONNECTION_CHECKING = 'CONNECTION_CHECKING';
+export const CONNECTION_CHECKED = 'CONNECTION_CHECKED';
+export const CONNECTION_ONLINE = 'CONNECTION_ONLINE';
+export const CONNECTION_OFFLINE = 'CONNECTION_OFFLINE';
+
+function offlineExpensesLoaded(expenses) {
+    return {
+        type: OFFLINE_EXPENSES_LOADED,
+        expenses: expenses
+    }
+}
+
+export function loadOfflineExpenses() {
+    return dispatch => {
+        offline.get('expenses').then(expenses => {
+            dispatch(offlineExpensesLoaded(expenses || []));
+        });
+    }
+}
+
+export function checkConnection() {
+    return dispatch => {
+        dispatch({ type: CONNECTION_CHECKING });
+        setTimeout(() => dispatch({ type: CONNECTION_CHECKED}), 5000);
+    }
+}
+
+export function goOnline() {
+    return {
+        type: CONNECTION_ONLINE
+    }
+}
+
+export function goOffline() {
+    return {
+        type: CONNECTION_OFFLINE
     }
 }

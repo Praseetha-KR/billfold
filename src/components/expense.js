@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
     Text,
-    View
+    View,
+    Button
 } from 'react-native';
 
 export default class Expense extends Component {
@@ -18,6 +19,12 @@ export default class Expense extends Component {
                 <Text>{this.props.category}</Text>
                 <Text>{this.props.amount}</Text>
                 <Text>{this.props.date}</Text>
+                <Text>removable: {this.props.removable}</Text>
+                <Button
+                    title="x"
+                    disabled={!this.props.removable}
+                    onPress={() => this.props.onRemove()}
+                />
             </View>
         )
     }
