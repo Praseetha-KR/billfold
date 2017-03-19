@@ -1,41 +1,19 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  Navigator
-} from 'react-native';
+import { AppRegistry, Text } from 'react-native';
+import { Provider } from 'react-redux';
+import App from './src/containers/app';
+import configureStore from './src/store/configure_store';
 
-var First = require('./app/first').default;
-const ExpenseList = require('./app/expense-list/expense-list').default;
-const ExpenseView = require('./app/expense-view/expense-view').default;
-const ExpenseAdd = require('./app/expense-add/expense-add').default;
+const store = configureStore();
 
-export default class billfold extends Component {
+export default class Billfold extends Component {
     render() {
         return (
-            <Navigator
-                initialRoute={{id: 'First'}}
-                renderScene={this.navigatorRenderScene}
-            />
-        );
-    }
-    navigatorRenderScene(route, navigator) {
-        switch(route.id) {
-            case 'First':
-                return (<First navigator={navigator} title="first" />);
-            case 'ExpenseList':
-                return (<ExpenseList navigator={navigator} title="Expense List" />);
-            case 'ExpenseView':
-                return (<ExpenseView navigator={navigator} title="Expense View" date={route.date} />);
-            case 'ExpenseAdd':
-                return (<ExpenseAdd navigator={navigator} title="Expense AddExpenseAdd" />);
-        }
+            <Provider store={store}>
+                <App />
+            </Provider>
+        )
     }
 }
 
-AppRegistry.registerComponent('billfold', () => billfold);
+AppRegistry.registerComponent('billfold', () => Billfold);
