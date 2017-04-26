@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
-    Button
+    StyleSheet
 } from 'react-native';
+import Button from 'react-native-button';
 
 export default class Expense extends Component {
     constructor(props) {
@@ -14,18 +15,41 @@ export default class Expense extends Component {
 
     render() {
         return (
-            <View>
-                <Text>{this.props.purpose}</Text>
+            <View style={styles.expense}>
+                <Text style={styles.expense__purpose}>{this.props.purpose}</Text>
                 <Text>{this.props.category}</Text>
                 <Text>{this.props.amount}</Text>
-                <Text>{this.props.date}</Text>
-                <Text>removable: {this.props.removable}</Text>
+                <Text>{(new Date(this.props.date)).toString()}</Text>
                 <Button
-                    title="x"
+                    style={styles.button}
                     disabled={!this.props.removable}
-                    onPress={() => this.props.onRemove()}
-                />
+                    styleDisabled={styles.buttonDisabled}
+                    onPress={() => this.props.onRemove()}>
+                    x
+                </Button>
             </View>
         )
     }
 }
+
+var styles = StyleSheet.create({
+    expense: {
+        backgroundColor: '#FFFFFF',
+        borderColor: '#cccccc',
+        borderWidth: 1,
+        borderStyle: 'solid'
+    },
+    button: {
+        borderColor: 'red',
+        color: 'red',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        width: 28,
+        height: 28,
+        borderRadius: 20,
+        opacity: 0.3,
+    },
+    expense__purpose: {
+        fontSize: 16
+    }
+});
