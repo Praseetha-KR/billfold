@@ -5,20 +5,24 @@ import {
     ListView,
     View,
     TextInput,
-    Button
+    Button,
+    Navigator
 } from 'react-native';
 import Expense from './expense';
+import Timeline from './timeline';
+import AddExpense from './add_expense';
 
 export default class Billfold extends Component {
     constructor(props) {
         super(props);
 
-        this.state = Object.assign({}, this._clearExpense());
+        this.state = {
+            expenses: [],
+            readonlyMessage: ''
+        };
     }
 
     componentWillMount() {
-        this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2});
-
         this.props.loadOfflineExpenses();
 
         if (NetInfo) {
@@ -34,110 +38,53 @@ export default class Billfold extends Component {
         }
     }
 
-    renderRow(rowData) {
-        return (
-            <Expense
-                purpose={rowData.purpose}
-                category={rowData.category}
-                amount={rowData.amount}
-                date={rowData.date}
-                removable={this.props.connected}
-                onRemove={() => this._remove(rowData.id)}
-            />
-        )
-    }
-
-    _clearExpense() {
-        return {
-            newExpensePurpose: '',
-            newExpenseCategory: '',
-            newExpenseAmount: '',
-            newExpenseDate: ''
-        };
-    }
-
-    _isValidExpense() {
-        if (this.state.newExpensePurpose && this.state.newExpenseCategory && this.state.newExpenseAmount && !isNaN(this.state.newExpenseAmount)) {
-            return true
-        }
-        return false
-    }
-
-    _add() {
-        if (this._isValidExpense()) {
-            this.props.addExpense(
-                this.state.newExpensePurpose,
-                this.state.newExpenseCategory,
-                this.state.newExpenseAmount,
-                this.state.newExpenseDate
-            );
-
-            this.setState(this._clearExpense());
-        }
-    }
-
-    _remove(id) {
-        this.props.removeExpense(id);
-    }
-
     render() {
-        console.log(this.props);
-        let expenses, readonlyMessage;
-
         if (this.props.connected) {
-            expenses = this.props.onlineExpenses;
-            readonlyMessage = <Text>Online</Text>
+            this.state.expenses = this.props.onlineExpenses;
+            this.state.readonlyMessage = <Text>Online</Text>;
         } else if (this.props.connectionChecked) {
-            expenses = this.props.offlineExpenses;
-            readonlyMessage = <Text>Offline</Text>;
+            this.state.expenses = this.props.offlineExpenses,
+            this.state.readonlyMessage = <Text>Offline</Text>;
         } else {
-            expenses = [];
-            readonlyMessage = <Text>Loading...</Text>;
+            this.state.expenses = [],
+            this.state.readonlyMessage = <Text>Loading...</Text>;
         }
 
         return (
-            <View>
-                {readonlyMessage}
-                <TextInput
-                    ref="newExpensePurpose"
-                    placeholder="Purpose"
-                    editable={this.props.connected}
-                    value={this.state.newExpensePurpose}
-                    onChangeText={(newExpensePurpose) => this.setState({newExpensePurpose})}
-                />
-                <TextInput
-                    ref="newExpenseCategory"
-                    placeholder="Category"
-                    editable={this.props.connected}
-                    value={this.state.newExpenseCategory}
-                    onChangeText={(newExpenseCategory) => this.setState({newExpenseCategory})}
-                />
-                <TextInput
-                    ref="newExpenseAmount"
-                    placeholder="Amount"
-                    editable={this.props.connected}
-                    value={this.state.newExpenseAmount}
-                    onChangeText={(newExpenseAmount) => this.setState({newExpenseAmount})}
-                />
-                <TextInput
-                    ref="newExpenseDate"
-                    placeholder="Date"
-                    editable={this.props.connected}
-                    value={this.state.newExpenseDate}
-                    onChangeText={(newExpenseDate) => this.setState({newExpenseDate})}
-                />
-                <Button
-                    title="Add Expense"
-                    disabled={!this.props.connected}
-                    onPress={() => this._add()}
-                />
-
-                <ListView
-                    dataSource={this.dataSource.cloneWithRows(expenses)}
-                    enableEmptySections={true}
-                    renderRow={this.renderRow.bind(this)}
-                />
-            </View>
+            <Navigator
+                initialRoute={{id: 'Timeline'}}
+                renderScene={this.navigatorRenderScene.bind(this)}
+            />
         );
+    }
+    navigatorRenderScene(route, navigator) {
+        switch(route.id) {
+            case 'Timeline':
+                return (
+                    <Timeline
+                        connected={this.props.connected}
+                        removeExpenseFn={this.props.removeExpense}
+                        expenses={this.state.expenses}
+                        readonlyMessage={this.state.readonlyMessage}
+                        navigator={navigator}
+                        title="Timeline"
+                    />
+                );
+            case 'AddExpense':
+                return (
+                    <AddExpense
+                        addExpenseFn={this.props.addExpense}
+                        connected={this.props.connected}
+                        navigator={navigator}
+                        title="Add Expense"
+                    />
+                );
+            case 'ListDaily':
+                return (<Text>list daily</Text>);
+            case 'ListMonthly':
+                return (<Text>list monthly</Text>);
+            default:
+                return (<Text>Billfold</Text>);
+        }
     }
 }
