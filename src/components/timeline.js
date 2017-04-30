@@ -54,7 +54,7 @@ export default class AddExpense extends Component {
                 <ToolbarAndroid
                     style={styles.toolbar}
                     title={config.APP_NAME}
-                    titleColor="#FFFFFF"
+                    titleColor="#6D74FC"
                     actions={toolbarActions}
                     onActionSelected={(e) => this._loadAddView(e)}
                 />
@@ -70,7 +70,7 @@ export default class AddExpense extends Component {
                     <Button
                         style={styles.button}
                         onPress={(e) => this._loadAddView(e)}>
-                        +
+                        + Add Expense
                     </Button>
                 </ScrollView>
             </View>
@@ -79,7 +79,7 @@ export default class AddExpense extends Component {
 }
 
 var toolbarActions = [
-    {title: 'ADD', icon: require('../icons/clipboard.png'), show: 'always', nav: 'AddExpense'},
+    { title: '+ NEW EXPENSE', show: 'always', nav: 'AddExpense' },
 ];
 
 var styles = StyleSheet.create({
@@ -88,20 +88,22 @@ var styles = StyleSheet.create({
         backgroundColor: '#EEF5FA'
     },
     toolbar: {
-        backgroundColor: '#1374D3',
+        backgroundColor: '#EEF5FA',
         height: 56,
     },
     scroll: {
-        padding: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     button: {
         fontSize: 18,
-        backgroundColor: '#0BD977',
+        backgroundColor: '#6D74FC',
         color: '#FFFFFF',
         padding: 12,
         paddingBottom: 15,
         borderRadius: 4,
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: 20
     },
     buttonDisabled: {
         backgroundColor: '#CCCCCC',
