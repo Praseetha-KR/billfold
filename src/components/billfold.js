@@ -41,7 +41,7 @@ export default class Billfold extends Component {
     render() {
         if (this.props.connected) {
             this.state.expenses = this.props.onlineExpenses;
-            this.state.readonlyMessage = <Text>Online</Text>;
+            this.state.readonlyMessage = <Text></Text>;
         } else if (this.props.connectionChecked) {
             this.state.expenses = this.props.offlineExpenses,
             this.state.readonlyMessage = <Text>Offline</Text>;
