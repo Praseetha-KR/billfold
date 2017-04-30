@@ -6,9 +6,11 @@ import {
     StyleSheet,
     View,
     Text,
-    TextInput
+    TextInput,
+    Picker
 } from 'react-native';
 import Button from 'react-native-button';
+import DatePicker from 'react-native-datepicker';
 import config from '../../config.js';
 
 export default class AddExpense extends Component {
@@ -22,7 +24,7 @@ export default class AddExpense extends Component {
             newExpensePurpose: '',
             newExpenseCategory: '',
             newExpenseAmount: '',
-            newExpenseDate: ''
+            newExpenseDate: new Date()
         };
     }
 
@@ -64,20 +66,20 @@ export default class AddExpense extends Component {
                 />
                 <ScrollView style={styles.scroll}>
                     <View>
-                        <TextInput
-                            ref="newExpensePurpose"
-                            placeholder="Purpose"
-                            editable={this.props.connected}
-                            value={this.state.newExpensePurpose}
-                            onChangeText={(newExpensePurpose) => this.setState({newExpensePurpose})}
-                        />
-                        <TextInput
+                        <Picker
                             ref="newExpenseCategory"
                             placeholder="Category"
                             editable={this.props.connected}
-                            value={this.state.newExpenseCategory}
-                            onChangeText={(newExpenseCategory) => this.setState({newExpenseCategory})}
-                        />
+                            selectedValue={this.state.newExpenseCategory}
+                            onValueChange={(newExpenseCategory) => this.setState({newExpenseCategory})}
+                        >
+                            <Picker.Item label="Food" value="food" />
+                            <Picker.Item label="Travel" value="travel" />
+                            <Picker.Item label="Shopping" value="shopping" />
+                            <Picker.Item label="Recharge" value="recharge" />
+                            <Picker.Item label="Utilities" value="utilities" />
+                            <Picker.Item label="Others" value="others" />
+                        </Picker>
                         <TextInput
                             ref="newExpenseAmount"
                             placeholder="Amount"
@@ -86,11 +88,39 @@ export default class AddExpense extends Component {
                             onChangeText={(newExpenseAmount) => this.setState({newExpenseAmount})}
                         />
                         <TextInput
+                            ref="newExpensePurpose"
+                            placeholder="Purpose"
+                            editable={this.props.connected}
+                            value={this.state.newExpensePurpose}
+                            onChangeText={(newExpensePurpose) => this.setState({newExpensePurpose})}
+                        />
+                        <DatePicker
                             ref="newExpenseDate"
                             placeholder="Date"
                             editable={this.props.connected}
                             value={this.state.newExpenseDate}
-                            onChangeText={(newExpenseDate) => this.setState({newExpenseDate})}
+                            style={{
+                                width: -1, // full width
+                                marginTop: 15
+                            }}
+                            date={this.state.newExpenseDate}
+                            mode="date"
+                            format="DD MMM YYYY"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            showIcon={false}
+                            customStyles={{
+                                dateInput: {
+                                    marginLeft: 4,
+                                    marginRight: 4,
+                                    borderBottomColor: '#888',
+                                    borderTopWidth: 0,
+                                    borderLeftWidth: 0,
+                                    borderRightWidth: 0,
+                                    alignItems: 'flex-start'
+                                }
+                            }}
+                            onDateChange={(newExpenseDate) => {this.setState({newExpenseDate})}}
                         />
                         <Button
                             style={styles.button}
