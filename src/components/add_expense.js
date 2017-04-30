@@ -57,8 +57,8 @@ export default class AddExpense extends Component {
             <View style={styles.container}>
                 <ToolbarAndroid
                     style={styles.toolbar}
-                    title={config.APP_NAME}
-                    titleColor="#FFFFFF"
+                    title="New Expense"
+                    titleColor="#6D74FC"
                     actions={toolbarActions}
                     onActionSelected={(e) => this._loadListView(e)}
                 />
@@ -97,7 +97,7 @@ export default class AddExpense extends Component {
                             disabled={!this.props.connected}
                             styleDisabled={styles.buttonDisabled}
                             onPress={() => this._add()}>
-                            Save Expense
+                            Save
                         </Button>
                     </View>
                 </ScrollView>
@@ -107,7 +107,7 @@ export default class AddExpense extends Component {
 }
 
 var toolbarActions = [
-    {title: 'ALL', iconColor: '#FFFFFF', show: 'always', nav: 'Timeline'},
+    {title: 'CANCEL', show: 'always', nav: 'Timeline'},
 ];
 
 var styles = StyleSheet.create({
@@ -116,7 +116,7 @@ var styles = StyleSheet.create({
         backgroundColor: '#EEF5FA'
     },
     toolbar: {
-        backgroundColor: '#1374D3',
+        backgroundColor: '#EEF5FA',
         height: 56,
     },
     scroll: {
@@ -124,7 +124,7 @@ var styles = StyleSheet.create({
     },
     button: {
         fontSize: 18,
-        backgroundColor: '#0BD977',
+        backgroundColor: '#6D74FC',
         color: '#FFFFFF',
         padding: 12,
         paddingBottom: 15,
