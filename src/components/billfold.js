@@ -11,6 +11,7 @@ import {
 import Expense from './expense';
 import Timeline from './timeline';
 import AddExpense from './add_expense';
+import ViewExpense from './view_expense';
 
 export default class Billfold extends Component {
     constructor(props) {
@@ -79,10 +80,14 @@ export default class Billfold extends Component {
                         title="Add Expense"
                     />
                 );
-            case 'ListDaily':
-                return (<Text>list daily</Text>);
-            case 'ListMonthly':
-                return (<Text>list monthly</Text>);
+            case 'ViewExpense':
+                return (
+                    <ViewExpense
+                        navigator={navigator}
+                        title="View Expense"
+                        date={route.date}
+                    />
+                );
             default:
                 return (<Text>Billfold</Text>);
         }

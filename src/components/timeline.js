@@ -15,7 +15,7 @@ import Button from 'react-native-button';
 import config from '../../config.js';
 import Expense from './expense';
 
-export default class AddExpense extends Component {
+export default class Timeline extends Component {
     constructor(props) {
         super(props);
     }
@@ -37,14 +37,18 @@ export default class AddExpense extends Component {
 
     renderRow(rowData) {
         return (
-            <Expense
-                purpose={rowData.purpose}
-                category={rowData.category}
-                amount={rowData.amount}
-                date={rowData.date}
-                removable={this.props.connected}
-                onRemove={() => this._remove(rowData.id)}
-            />
+            <View>
+                <Text>{this.props.navigator.toString()}</Text>
+                <Expense
+                    navigator={this.props.navigator}
+                    purpose={rowData.purpose}
+                    category={rowData.category}
+                    amount={rowData.amount}
+                    date={rowData.date}
+                    removable={this.props.connected}
+                    onRemove={() => this._remove(rowData.id)}
+                />
+            </View>
         )
     }
 
@@ -64,7 +68,7 @@ export default class AddExpense extends Component {
                         <ListView
                             dataSource={this.dataSource.cloneWithRows(this.props.expenses)}
                             enableEmptySections={true}
-                            renderRow={this.renderRow.bind(this)}
+                            renderRow={(e) => this.renderRow(e)}
                         />
                     </View>
                     <Button

@@ -3,7 +3,9 @@ import {
     Text,
     View,
     Image,
-    StyleSheet
+    StyleSheet,
+    TouchableHighlight,
+    Navigator
 } from 'react-native';
 import Button from 'react-native-button';
 
@@ -49,30 +51,42 @@ export default class Expense extends Component {
             others: require('../icons/others.png')
         };
         return (
-            <View style={styles.expense}>
-                <View style={styles.expense__left}>
-                    {/*<Text style={styles.expense__category}>{this.props.category}</Text>*/}
-                    <View style={[styles.expense__category, this._categoryColor(this.props.category)]}>
-                        <Image source={categories[this.props.category]} style={{width: 25, height: 25}}/>
+            <TouchableHighlight onPress={(e) => this._onCardClick(e)}>
+                <View style={styles.expense}>
+                    <Text>{this.props.navigator.toString()}</Text>
+                    <View style={styles.expense__left}>
+                        <View style={[styles.expense__category, this._categoryColor(this.props.category)]}>
+                            <Image source={categories[this.props.category]} style={{width: 25, height: 25}}/>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.expense__mid}>
-                    <Text style={styles.expense__purpose}>{this.props.purpose}</Text>
-                </View>
-                <View style={styles.expense__right}>
-                    <Text style={styles.expense__amount}>{this.props.amount}</Text>
-                    <Text style={styles.expense__date}>{this._formatDate(new Date(this.props.date))}</Text>
-                </View>
+                    <View style={styles.expense__mid}>
+                        <Text style={styles.expense__purpose}>{this.props.purpose}</Text>
+                    </View>
+                    <View style={styles.expense__right}>
+                        <Text style={styles.expense__amount}>{this.props.amount}</Text>
+                        <Text style={styles.expense__date}>{this._formatDate(new Date(this.props.date))}</Text>
+                    </View>
 
-                {/*<Button
-                    style={styles.button}
-                    disabled={!this.props.removable}
-                    styleDisabled={styles.buttonDisabled}
-                    onPress={() => this.props.onRemove()}>
-                    x
-                </Button>*/}
-            </View>
+                    {/*<Button
+                        style={styles.button}
+                        disabled={!this.props.removable}
+                        styleDisabled={styles.buttonDisabled}
+                        onPress={() => this.props.onRemove()}>
+                        x
+                    </Button>*/}
+                </View>
+            </TouchableHighlight>
         )
+    }
+
+
+    _onCardClick(dateStr) {
+        console.log(this.props.navigator);
+        this.props.navigator.push({
+            id: 'ViewExpense',
+            title: 'View Expense',
+            date: dateStr
+        });
     }
 }
 
